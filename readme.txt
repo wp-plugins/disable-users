@@ -13,9 +13,10 @@ Provides the ability to disable specific user accounts.
 
 This plugin gives you the ability to disable specific user accounts via a profile setting.
 
-Once installed and activated, a checkbox appears on the user profile settings (only for admins). When checked, the users account will be disabled and they will be unable to login with the account. If they try to login, they are instantly logged out and redirected to the login page with a message that notifies this their account is disabled.
+Once installed and activated, a checkbox appears on the user profile settings (only for admins). When checked, the users account will be disabled and they will be unable to login with the account. If they try to login, they are instantly logged out and redirected to the login page with a message that notifies them their account is disabled.
 
 This can be useful in a few situations.
+
 * You are working on a site for a client who has an account, but do not want him to login and/or make changes during development.
 * You have a client who has an unpaid invoice.
 
