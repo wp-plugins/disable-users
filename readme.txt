@@ -23,7 +23,7 @@ This can be useful in a few situations.
 == Installation ==
 
 1. Upload `disable-users` to your `/wp-content/plugins/` directory.
-2. Edit any user and then look for the "Disable User Account" checkbox.
+1. Edit any user and then look for the "Disable User Account" checkbox.
 
 == Frequently Asked Questions ==
 
@@ -34,7 +34,7 @@ Yes, there is a filter in place for that, `ja_disable_users_notice`.
 == Screenshots ==
 
 1. User profile setting available to administrators
-2. Message when a disabled user tries to login 
+1. Message when a disabled user tries to login 
 
 == Changelog ==
 
