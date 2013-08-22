@@ -3,9 +3,9 @@ Contributors: jaredatch
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=AD8KTWTTDX9JL
 Tags: users
 Requires at least: 3.6.0
-Tested up to: 3.6.1
+Tested up to: 3.6.0
 Stable tag: trunk
-License: GPLv2 or later
+License: GPLv2
  
 Provides the ability to disable specific user accounts.
 
@@ -33,8 +33,8 @@ Yes, there is a filter in place for that, `ja_disable_users_notice`.
 
 == Screenshots ==
 
-1. User profile setting available to administrators
-1. Message when a disabled user tries to login 
+1. User profile setting available to administrators.
+2. Message when a disabled user tries to login.
 
 == Changelog ==
 
