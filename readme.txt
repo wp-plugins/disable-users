@@ -38,6 +38,9 @@ Yes, there is a filter in place for that, `ja_disable_users_notice`.
 
 == Changelog ==
 
+= 1.0.2 =
+* Removed accidental PHP short form
+
 = 1.0.1 =
 * Fixed notice that would show if WP_DEBUG was on. Props @vegasgeek.
 
