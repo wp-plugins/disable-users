@@ -3,7 +3,7 @@
  * Plugin Name: Disable Users
  * Plugin URI:  http://wordpress.org/extend/disable-users
  * Description: This plugin provides the ability to disable specific user accounts.
- * Version:     1.0.2
+ * Version:     1.0.3
  * Author:      Jared Atchison
  * Author URI:  http://jaredatchison.com 
  *
@@ -18,16 +18,14 @@
  * GNU General Public License for more details.
  *
  * @author     Jared Atchison
- * @version    1.0.2
+ * @version    1.0.3
  * @package    JA_DisableUsers
- * @copyright  Copyright (c) 2013, Jared Atchison
+ * @copyright  Copyright (c) 2015, Jared Atchison
  * @link       http://jaredatchison.com
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 
 final class ja_disable_users {
-
-	static $instance;
 
 	/**
 	 * Initialize all the things
@@ -35,17 +33,19 @@ final class ja_disable_users {
 	 * @since 1.0.0
 	 */
 	function __construct() {
-		
-		self::$instance =& $this;
-		
+
 		// Actions
-		add_action( 'init',                     array( $this, 'load_textdomain'         )        );
-		add_action( 'show_user_profile',        array( $this, 'use_profile_field'       )        );
-		add_action( 'edit_user_profile',        array( $this, 'use_profile_field'       )        );
-		add_action( 'personal_options_update',  array( $this, 'user_profile_field_save' )        );
-		add_action( 'edit_user_profile_update', array( $this, 'user_profile_field_save' )        );
-		add_action( 'wp_login',                 array( $this, 'user_login'              ), 10, 2 );
-		add_filter( 'login_message',            array( $this, 'user_login_message'      )        );
+		add_action( 'init',                       array( $this, 'load_textdomain'             )        );
+		add_action( 'show_user_profile',          array( $this, 'use_profile_field'           )        );
+		add_action( 'edit_user_profile',          array( $this, 'use_profile_field'           )        );
+		add_action( 'personal_options_update',    array( $this, 'user_profile_field_save'     )        );
+		add_action( 'edit_user_profile_update',   array( $this, 'user_profile_field_save'     )        );
+		add_action( 'wp_login',                   array( $this, 'user_login'                  ), 10, 2 );
+		add_action( 'manage_users_custom_column', array( $this, 'manage_users_column_content' ), 10, 3 );
+		add_action( 'admin_footer-users.php',	  array( $this, 'manage_users_css'            )        );
+		// Filters
+		add_filter( 'login_message',              array( $this, 'user_login_message'          )        );
+		add_filter( 'manage_users_columns',       array( $this, 'manage_users_columns'	      )        );
 	}
 
 	/**
@@ -113,8 +113,15 @@ final class ja_disable_users {
 	 * @param string $user_login
 	 * @param object $user
 	 */
-	public function user_login( $user_login, $user ) {
+	public function user_login( $user_login, $user = null ) {
 
+		if ( !$user ) {
+			$user = get_user_by('login', $user_login);
+		}
+		if ( !$user ) {
+			// not logged in - definitely not disabled
+			return;
+		}
 		// Get user meta
 		$disabled = get_user_meta( $user->ID, 'ja_disable_user', true );
 		
@@ -147,5 +154,44 @@ final class ja_disable_users {
 		return $message;
 	}
 
+	/**
+	 * Add custom disabled column to users list
+	 *
+	 * @since 1.0.3
+	 * @param array $defaults
+	 * @return array
+	 */
+	public function manage_users_columns( $defaults ) {
+
+		$defaults['ja_user_disabled'] = __( 'Disabled', 'ja_disable_users' );
+		return $defaults;
+	}
+
+	/**
+	 * Set content of disabled users column
+	 *
+	 * @since 1.0.3
+	 * @param empty $empty
+	 * @param string $column_name
+	 * @param int $user_ID
+	 * @return string
+	 */
+	public function manage_users_column_content( $empty, $column_name, $user_ID ) {
+
+		if ( $column_name == 'user_disabled' ) {
+			if ( get_the_author_meta( 'ja_disable_user', $user_ID )	== 1 ) {
+				return __( 'Disabled', 'ja_disable_users' );
+			}
+		}
+	}
+
+	/**
+	 * Specifiy the width of our custom column
+	 *
+	 * @since 1.0.3
+ 	 */
+	public function manage_users_css() {
+		echo '<style type="text/css">.column-ja_user_disabled { width: 80px; }</style>';
+	}
 }
 new ja_disable_users();
